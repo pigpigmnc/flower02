@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="com.zsc.flower.dao.CartDao">
+    <select id="selectCartDetail" resultType="model.entity.CartDetail" parameterType="Long">
+        select * from cart where id=#{id}
+    </select>
+    <insert id="selectAddCart" parameterType="model.entity.Cart">
+        insert into cart (uid,pid,fileurlpath,pname,simplePrice,count,totalPrice)
+        values (#{uid},#{pid},#{fileurlpath},#{pname},#{simplePrice},#{count},#{totalPrice})
+    </insert>
+
+    <select id="selectListCartByUid" resultType="model.entity.Cart">
+        select * from cart where uid=#{uid}
+    </select>
+
+    <select id="selectCartByUidAndPid" resultType="model.entity.Cart">
+        select * from cart where uid=#{uid} and pid=#{pid}
+    </select>
+
+    <select id="selectCartById" resultType="model.entity.Cart">
+        select * from cart where id=#{id}
+    </select>
+
+    <update id="selectUpdateCart" parameterType="model.entity.Cart">
+        update cart set count=#{count},totalPrice=#{totalPrice}
+    </update>
+
+    <delete id="selectDeleteCartById">
+        delete from cart where id=#{id}
+    </delete>
+
+    <delete id="selectDeleteCartByUidAndPid">
+        delete from cart where uid=#{uid} and pid=#{pid}
+    </delete>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="com.zsc.flower.dao.UsersDao">
+    <select id="selectUser" resultType="model.entity.Users">
+        select * from users where username=#{username} and password=#{password}
+    </select>
+    <select id="selectAllUsers" resultType="model.entity.Users">
+        select * from users
+    </select>
+    <insert id="selectAddUser" parameterType="model.entity.Users">
+        insert into users (username,password,phone,address,email,status,role,registerDate) value
+        (#{username},#{password},#{phone},#{address},#{email},#{status},#{role},#{registerDate})
+    </insert>
+    <select id="selectUserById" resultType="model.entity.Users">
+        select * from users where id=#{id}
+    </select>
+
+    <update id="selectModifyItself" parameterType="model.entity.Users">
+        update users set username=#{username} , password=#{password} ,
+        phone=#{phone} , address=#{address} , email=#{email} where id=#{id}
+    </update>
+
+    <select id="selectUserStatusById" resultType="Integer" parameterType="Long">
+        select status from users where id=#{id}
+    </select>
+
+    <update id="selectChangeUserStatus">
+        update users set status=#{status} where id=#{id}
+    </update>
+
+    <select id="selectUserByUsername" resultType="model.entity.Users">
+        select * from users where username=#{username}
+    </select>
+</mapper>

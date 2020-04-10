@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="com.zsc.flower.dao.ProductImageDao">
+    <insert id="selectInsertProductImages" parameterType="model.entity.ProductImage">
+        insert into productimage (pid,filename,fileurlpath)
+        values (#{pid},#{filename},#{fileurlpath})
+    </insert>
+
+    <select id="selectPicListByPID" resultType="String">
+        select fileurlpath from productimage where pid=#{pid}
+    </select>
+
+    <select id="selectIndexImageNull" resultType="String">
+        select indexImg from proimage where pid =#{pid}
+    </select>
+    <select id="selectViewImageNull" resultType="String">
+        select viewImg from proimage where pid =#{pid}
+    </select>
+
+    <select id="selectProductImageUrlById" resultType="String">
+        select fileurlpath from productimage where pid=#{id}
+    </select>
+</mapper>

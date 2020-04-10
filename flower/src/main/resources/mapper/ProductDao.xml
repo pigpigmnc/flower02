@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="com.zsc.flower.dao.ProductDao">
+    <!--测试用,暂时关闭外键约束-->
+    <!--<select id="closeforeign">-->
+        <!--SET FOREIGN_KEY_CHECKS = 0-->
+    <!--</select>-->
+
+    <insert id="selectAddCategory">
+        insert into category (name) values(#{name})
+    </insert>
+    <select id="selectListCategory" resultType="model.entity.Category">
+        select * from category
+    </select>
+    <insert id="selectAddProperty">
+        insert into property (cid,name) values (#{cid},#{name})
+    </insert>
+
+    <insert id="selectAddProduct" parameterType="model.entity.Product">
+        insert into Product (name,subTitle,originalPrice,promotePrice,stock,cid,createDate,saleCount)
+        values (#{name},#{subTitle},#{originalPrice},#{promotePrice},#{stock},#{cid},#{createDate},#{saleCount})
+    </insert>
+
+    <insert id="selectAddPropertyValue">
+        insert into propertyvalue (pid,ptid,value)
+        values (#{pid},#{ptid},#{value})
+    </insert>
+
+    <resultMap id="BaseDetailMap" type="model.entity.BaseDetail">
+        <id column="id" property="id" javaType="long"/>
+        <result column="name" property="name" javaType="java.lang.String"/>
+        <result column="cname" property="cname" javaType="java.lang.String"/>
+        <result column="fileurlpath" property="fileurlpath" javaType="java.lang.String"/>
+        <result column="subTitle" property="subTitle" javaType="java.lang.String"/>
+        <result column="originalPrice" property="originalPrice" javaType="java.lang.String"/>
+        <result column="promotePrice" property="promotePrice" javaType="java.lang.String"/>
+        <result column="stock" property="stock" javaType="long"/>
+        <result column="createDate" property="createDate" javaType="java.util.Date"/>
+    </resultMap>
+    <select id="selectShowBaseDetail" resultMap="BaseDetailMap">
+        SELECT
+category.name as cname,
+productimage.fileurlpath,
+product.id,
+product.subTitle,
+product.name,
+product.originalPrice,
+product.promotePrice,
+product.stock,
+product.createDate
+FROM
+product ,
+productimage ,
+category
+WHERE
+product.id =  productimage.pid AND
+product.cid =  category.id and product.id=#{id}
+group by product.id
+    </select>
+    <select id="selectShowExtendDetail" resultType="model.entity.ExtendDetail">
+        select id,ptname,value from productdetail where id=#{id} group by ptname
+    </select>
+
+    <!--增加saleCount之后-->
+    <select id="selectListProduct" resultType="model.entity.ListProduct">
+        select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+        from product as p,category as c,productimage as pimage where p.cid=c.id and p.id=pimage.pid group by id
+    </select>
+
+    <select id="selectCategoryCount" resultType="Integer">
+        select count(*) from property where cid=#{cid}
+    </select>
+
+    <select id="selectOldStock" resultType="Long">
+        select stock from product where id=#{id}
+    </select>
+    <update id="selectUpdateStock">
+        update product set stock=#{stock} where id=#{id}
+    </update>
+    <select id="selectOldSaleCount" resultType="Long">
+        select saleCount from product where id=#{id}
+    </select>
+    <update id="selectUpdateSaleCount">
+        update product set saleCount=#{saleCount} where id=#{id}
+    </update>
+
+    <select id="selectProductByCId" parameterType="Long" resultType="model.entity.ListProduct">
+        select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+        from product as p,category as c,productimage as pimage where p.cid=c.id and p.id=pimage.pid and p.cid=#{cid} group by p.id
+    </select>
+
+    <select id="selectSimpleDetail" resultType="model.entity.SimpleDetail">
+      SELECT
+            p.id,
+            p.name,
+            p.subTitle,
+            p.promotePrice,
+            p.originalPrice,
+            p.stock,
+            p.saleCount,
+            category.name AS categoryname,
+            p.createDate
+        FROM
+            product AS p ,
+            category
+        WHERE
+            p.id =  #{pid} AND
+            p.cid =  category.id
+        GROUP BY p.id
+    </select>
+
+
+    <select id="selectListProductByDimSearch" resultType="model.entity.ListProduct">
+    select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+    from product as p,category as c,productimage as pimage
+    where p.cid=c.id and p.id=pimage.pid and p.name LIKE "%"#{name}"%"
+    group by id
+    </select>
+
+    <select id="selectProductById" resultType="model.entity.Product">
+        select * from product where id=#{id}
+    </select>
+
+    <update id="selectUpdateProduct" parameterType="model.entity.Product">
+        update product set name=#{name},subTitle=#{subTitle},promotePrice=#{promotePrice},
+        stock=#{stock} where id=#{id}
+    </update>
+
+    <delete id="selectDeleteProduct">
+        delete from product where id=#{id}
+    </delete>
+
+    <select id="closeforeign">
+        SET FOREIGN_KEY_CHECKS = 0
+    </select>
+
+    <select id="selectListProductByCreateDate" resultType="model.entity.ListProduct">
+        select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+        from product as p,category as c,productimage as pimage
+        where p.cid=c.id and p.id=pimage.pid
+        group by id
+        ORDER BY
+        p.createDate DESC
+    </select>
+    <select id="selectListProductBySaleCount" resultType="model.entity.ListProduct">
+        select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+        from product as p,category as c,productimage as pimage
+        where p.cid=c.id and p.id=pimage.pid
+        group by id
+        ORDER BY
+        p.saleCount DESC
+    </select>
+
+    <select id="findPidByTopInsert" resultType="java.lang.Long">
+        select id from product order by createDate desc limit 0,1
+    </select>
+</mapper>
