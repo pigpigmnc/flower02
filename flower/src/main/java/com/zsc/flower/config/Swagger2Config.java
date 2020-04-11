@@ -26,7 +26,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.zsc.servicedata.controller"))//controller所在的包
+                .apis(RequestHandlerSelectors.basePackage("com.zsc.flower.controller"))//controller所在的包
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(globalOperation());

@@ -18,15 +18,15 @@ import java.nio.charset.Charset;
 public class RedisConfig {
 
     RedisConfig(){
-        //打开autotype功能,需要强转的类一次添加其后
-        ParserConfig.getGlobalInstance()
-                .addAccept("model.pollutant.");
-        ParserConfig.getGlobalInstance()
-                .addAccept("model.air.");
-        ParserConfig.getGlobalInstance()
-                .addAccept(",model.result.");
-        ParserConfig.getGlobalInstance()
-                .addAccept("model.weather.");
+//        //打开autotype功能,需要强转的类一次添加其后
+//        ParserConfig.getGlobalInstance()
+//                .addAccept("model.pollutant.");
+//        ParserConfig.getGlobalInstance()
+//                .addAccept("model.air.");
+//        ParserConfig.getGlobalInstance()
+//                .addAccept(",model.result.");
+//        ParserConfig.getGlobalInstance()
+//                .addAccept("model.weather.");
     }
 
     @Bean

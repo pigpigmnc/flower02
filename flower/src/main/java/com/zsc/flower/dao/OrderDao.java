@@ -41,4 +41,6 @@ public interface OrderDao{
     public int selectUpdateOrders(Orders order);
 
     List<OrderItemDetail> findOrderItemDetailById(long orderId);
+
+    float selectTurnOver();
 }

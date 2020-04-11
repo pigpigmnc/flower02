@@ -30,7 +30,15 @@ public class OrderController {
     UsersService usersService;
     @Autowired
     TokenService tokenService;
-    
+
+    @RequestMapping(value = "/getTurnOver",method = RequestMethod.POST)
+    public ResponseResult getTurnOver(){
+        ResponseResult result = new ResponseResult();
+        float sum = orderService.findTurnOver();
+        result.setMsg(true);
+        result.setData(sum);
+        return result;
+    }
 
     //这里相当于从购物车里选中商品，然后结算生成订单，然后生成订单项
     @UserLoginToken
@@ -208,7 +216,7 @@ public class OrderController {
     public ResponseResult getProduct(@RequestParam("orderCode") String orderCode) {
         ResponseResult result = new ResponseResult();
         Orders order = orderService.findOrderByUIdAndCode(orderCode);
-        if (order.getStatus() == "已发货") {
+        if (order.getStatus().equals("已发货") ) {
             order.setConfirmDate(new Date());
             if (orderService.findUpdateOrderStatus("已确认收货", new Date().toLocaleString(), orderCode) == 1){
                 result.setMsg(true);

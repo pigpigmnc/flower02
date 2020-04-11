@@ -122,4 +122,9 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderItemDetail> findOrderItemDetailById(long orderId) {
         return orderDao.findOrderItemDetailById(orderId);
     }
+
+    @Override
+    public float findTurnOver() {
+        return orderDao.selectTurnOver();
+    }
 }

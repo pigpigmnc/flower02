@@ -317,7 +317,7 @@ public class ProductController {
             String type = contents.substring(firstIndex, index1);
 
             fileNameSuffix = UUID.randomUUID().toString() + "." + type;
-            String fileName = "F:\\apache-tomcat-9.0.14dir\\webapps\\ROOT\\mall-images\\" + fileNameSuffix;
+            String fileName = "F:\\nginx-1.12.1\\html\\mall-images\\" + fileNameSuffix;
             BASE64Decoder decoder = new BASE64Decoder();
             OutputStream os = null;
             try {

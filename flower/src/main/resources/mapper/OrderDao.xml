@@ -145,4 +145,8 @@ orderitem.pid =  product.id AND
 product.id =  productimage.pid
 GROUP BY product.name
     </select>
+
+    <select id="selectTurnOver" resultType="float">
+        SELECT SUM(orderPrice) FROM orders WHERE status ="已完成"
+    </select>
 </mapper>
