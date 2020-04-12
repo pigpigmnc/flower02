@@ -45,4 +45,6 @@ public interface ProductDao{
 
 
     long findPidByTopInsert();
+
+    List<ListProduct> selectProductForBanner();
 }

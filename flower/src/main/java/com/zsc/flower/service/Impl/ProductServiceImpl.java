@@ -157,4 +157,9 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findPidByTopInsert();
     }
 
+    @Override
+    public List<ListProduct> findProductForBanner() {
+        return productDao.selectProductForBanner();
+    }
+
 }

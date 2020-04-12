@@ -81,12 +81,11 @@ public class ProductController {
             if (n == 1) {
                 result.setMsg(true);
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("fileName",fileName);
-                jsonObject.put("fileurlpath",fileurlpath);
+                jsonObject.put("fileName", fileName);
+                jsonObject.put("fileurlpath", fileurlpath);
                 result.setData(jsonObject);
                 return result;
-            }
-            else{
+            } else {
                 return result;
             }
         } else {
@@ -99,11 +98,10 @@ public class ProductController {
     public ResponseResult addCategory(String name) {
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
-        if (productService.findAddCategory(name) == 1){
+        if (productService.findAddCategory(name) == 1) {
             result.setMsg(true);
             return result;
-        }
-        else
+        } else
             return result;
     }
 
@@ -117,18 +115,18 @@ public class ProductController {
         return result;
     }
 
-    //对应分类下的属性，增加
-    @RequestMapping(value = "/addProperty", method = RequestMethod.POST)
-    public ResponseResult addProperty(long cid, String name) {
-        ResponseResult result = new ResponseResult();
-        result.setMsg(false);
-        if (productService.findAddProperty(cid, name) == 1){
-            result.setMsg(true);
-            return result;
-        }
-        else
-            return result;
-    }
+//    //对应分类下的属性，增加
+//    @RequestMapping(value = "/addProperty", method = RequestMethod.POST)
+//    public ResponseResult addProperty(long cid, String name) {
+//        ResponseResult result = new ResponseResult();
+//        result.setMsg(false);
+//        if (productService.findAddProperty(cid, name) == 1){
+//            result.setMsg(true);
+//            return result;
+//        }
+//        else
+//            return result;
+//    }
 
     //查询商品的所有信息
     @RequestMapping(value = "/showBaseDetail", method = RequestMethod.GET)
@@ -166,7 +164,7 @@ public class ProductController {
     //按分类ID,返回listProduct列表yi
     @RequestMapping("/listProductByCId")
     public ResponseResult listProductByCId(@RequestParam(defaultValue = "1", required = true, value = "pn") Integer pn,
-                                         @RequestParam("cid") long cid) {
+                                           @RequestParam("cid") long cid) {
         ResponseResult result = new ResponseResult();
         int pageSize = 8;
         PageHelper.startPage(pn, pageSize);
@@ -217,11 +215,10 @@ public class ProductController {
         newProduct.setSubTitle(product.getSubTitle());
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
-        if (productService.findUpdateProduct(product) == 1){
+        if (productService.findUpdateProduct(product) == 1) {
             result.setMsg(true);
             return result;
-        }
-        else
+        } else
             return result;
     }
 
@@ -231,11 +228,10 @@ public class ProductController {
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
         productService.closeforeign();
-        if (productService.findDeleteProduct(id) == 1){
+        if (productService.findDeleteProduct(id) == 1) {
             result.setMsg(true);
             return result;
-        }
-        else
+        } else
             return result;
     }
 
@@ -249,10 +245,22 @@ public class ProductController {
         return result;
     }
 
-    //前台按createDate排序返回商品展示列表
+
     @RequestMapping(value = "/showProductBySaleCount", method = RequestMethod.GET)
-    public ResponseResult showProductBySaleCount() {
+    public ResponseResult showProductBySaleCount(@RequestParam(defaultValue = "1", required = true, value = "pn") Integer pn) {
+        int pageSize = 8;
+        PageHelper.startPage(pn, pageSize);
         List<ListProduct> listProductList = productService.findListProductBySaleCount();
+        PageInfo<ListProduct> pageInfo = new PageInfo<>(listProductList);
+        ResponseResult result = new ResponseResult();
+        result.setMsg(true);
+        result.setData(pageInfo);
+        return result;
+    }
+
+    @RequestMapping(value = "/showProductForBanner", method = RequestMethod.GET)
+    public ResponseResult showProductForBanner() {
+        List<ListProduct> listProductList = productService.findProductForBanner();
         ResponseResult result = new ResponseResult();
         result.setMsg(true);
         result.setData(listProductList);
@@ -287,14 +295,42 @@ public class ProductController {
         int m = 0;
         long pid = 0;
         JSONArray jsonArray = JSONArray.parseArray(arr);
+        Byte mainPic = 1;
         if (n == 1) {
             pid = productService.findPidByTopInsert();
             for (int i = 0; i < jsonArray.size(); i++) {
                 String data = (String) jsonArray.getJSONObject(i).get("name");
                 ProductImage productImage = parseContents(data);
                 productImage.setPid(pid);
+                productImage.setType(mainPic);
+                productImage.setSort(i);
                 m = productImageService.findInsertProductImages(productImage);
             }
+        }
+        ResponseResult result = new ResponseResult();
+        result.setMsg(false);
+        if (m == 1) {
+            result.setMsg(true);
+            result.setData(pid);
+            return result;
+        } else {
+            return result;
+        }
+    }
+
+    @RequestMapping(value = "/uploadBanners", method = RequestMethod.POST)
+    public ResponseResult uploadBanners(@RequestParam("id") long pid, @RequestParam("dataBase") String arr) {
+        int m = 0;
+        JSONArray jsonArray = JSONArray.parseArray(arr);
+        Byte bannerPic = 0;
+        for (int i = 0; i < jsonArray.size(); i++) {
+            String data = (String) jsonArray.getJSONObject(i).get("name");
+            ProductImage productImage = parseContents(data);
+            productImage.setPid(pid);
+            productImage.setType(bannerPic);
+            int topSort = productImageService.findTopSort(pid,bannerPic);
+            productImage.setSort(topSort+1+i);
+            m = productImageService.findInsertProductImages(productImage);
         }
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
@@ -360,7 +396,7 @@ public class ProductController {
 
     @GetMapping("/getSort")
     public ResponseResult getSort(@RequestParam(defaultValue = "1", required = true, value = "pn") Integer pn,
-                                @RequestParam("cid") long cid, @RequestParam("sort") String sort) {
+                                  @RequestParam("cid") long cid, @RequestParam("sort") String sort) {
 
         int pageSize = 10;
         PageHelper.startPage(pn, pageSize);

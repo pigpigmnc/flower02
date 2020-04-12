@@ -23,10 +23,6 @@
         values (#{name},#{subTitle},#{originalPrice},#{promotePrice},#{stock},#{cid},#{createDate},#{saleCount})
     </insert>
 
-    <insert id="selectAddPropertyValue">
-        insert into propertyvalue (pid,ptid,value)
-        values (#{pid},#{ptid},#{value})
-    </insert>
 
     <resultMap id="BaseDetailMap" type="model.entity.BaseDetail">
         <id column="id" property="id" javaType="long"/>
@@ -65,8 +61,10 @@ group by product.id
 
     <!--增加saleCount之后-->
     <select id="selectListProduct" resultType="model.entity.ListProduct">
-        select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
-        from product as p,category as c,productimage as pimage where p.cid=c.id and p.id=pimage.pid group by id
+    select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+        from product as p,category as c,productimage as pimage where p.cid=c.id and p.id=pimage.pid and pimage.type=1 and pimage.sort=0 order by p.createDate desc
+--         select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+--         from product as p,category as c,productimage as pimage where p.cid=c.id and p.id=pimage.pid group by id
     </select>
 
     <select id="selectCategoryCount" resultType="Integer">
@@ -155,5 +153,13 @@ group by product.id
 
     <select id="findPidByTopInsert" resultType="java.lang.Long">
         select id from product order by createDate desc limit 0,1
+    </select>
+
+    <select id="selectProductForBanner" resultType="model.entity.ListProduct">
+        select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+        from product as p,category as c,productimage as pimage
+        where p.cid=c.id and p.id=pimage.pid and pimage.type=0 and pimage.sort=0
+        ORDER BY
+        p.saleCount DESC
     </select>
 </mapper>

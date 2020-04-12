@@ -12,4 +12,6 @@ public interface ProductImageService {
     public List<String> findPicListByPID(long pid);
 
     public List<String> findProductImageUrlById(long id);
+
+    int findTopSort(long pid,byte type);
 }

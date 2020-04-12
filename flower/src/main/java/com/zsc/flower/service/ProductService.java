@@ -39,4 +39,6 @@ public interface ProductService {
     public PageInfo<ListProduct> findSort(int page, int size, long cid, String sort);
 
     long findPidByTopInsert();
+
+    List<ListProduct> findProductForBanner();
 }

@@ -27,4 +27,9 @@ public class ProductImageServiceImpl implements ProductImageService {
     public List<String> findProductImageUrlById(long id) {
         return productImageDao.selectProductImageUrlById(id);
     }
+
+    @Override
+    public int findTopSort(long pid, byte type) {
+        return productImageDao.selectTopSelect(pid,type);
+    }
 }

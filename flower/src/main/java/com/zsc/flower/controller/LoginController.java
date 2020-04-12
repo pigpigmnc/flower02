@@ -61,8 +61,8 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "/checkoutusername", method = RequestMethod.GET)
-    public ResponseResult checkoutusername(@RequestParam("username")String username)
+    @RequestMapping(value = "/checkOutUsername", method = RequestMethod.GET)
+    public ResponseResult checkOutUsername(@RequestParam("username")String username)
     {
         ResponseResult result = new ResponseResult();
         Users users=usersService.findUserByUsername(username);
@@ -80,7 +80,7 @@ public class LoginController {
     }
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ResponseResult register(@RequestParam("username")String username, @RequestParam("password")String password,
-                                  @RequestParam("phone")String phone, @RequestParam("email")String email)
+                                  @RequestParam("phone")String phone, @RequestParam("email")String email,@RequestParam("address")String address)
     {
         ResponseResult result = new ResponseResult();
         try{
@@ -92,6 +92,7 @@ public class LoginController {
                 user.setPassword(password);
                 user.setEmail(email);
                 user.setPhone(phone);
+                user.setAddress(address);
                 user.setRole(1);
                 user.setStatus(1);
                 user.setRegisterDate(new Date());
@@ -102,6 +103,7 @@ public class LoginController {
             else
             {
                 result.setMsg(false);
+                result.setData("该用户已存在,请选择别的用户名!");
                 return result;
             }
         }

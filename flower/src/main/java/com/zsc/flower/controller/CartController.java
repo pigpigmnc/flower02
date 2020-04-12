@@ -35,7 +35,7 @@ public class CartController {
     //用户加入购物车
     @UserLoginToken
     @RequestMapping(value = "/addCart",method = RequestMethod.POST)
-    public ResponseResult addCart(HttpServletRequest request, @RequestParam("pid")long pid,
+    public ResponseResult addCart(@RequestParam("pid")long pid,
                                   @RequestParam("count")int count){
         ResponseResult result = new ResponseResult();
         long uid = Long.parseLong(TokenUtil.getTokenUserId());
