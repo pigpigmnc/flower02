@@ -114,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.selectOrderById(id);
     }
     @Override
-    public int findUpdateOders(Orders orders) {
+    public int findUpdateOrders(Orders orders) {
         return orderDao.selectUpdateOrders(orders);
     }
 
@@ -126,5 +126,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public float findTurnOver() {
         return orderDao.selectTurnOver();
+    }
+
+    @Override
+    public List<Orders> getAllOrders() {
+        return orderDao.selectListAllOrder();
     }
 }

@@ -13,5 +13,5 @@ public class OrderAttach implements Serializable {
     String receiver;
     String mobile;
     String userMessage;
-    List<Long> pid;
+    List<Long> cartIdList;
 }

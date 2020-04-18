@@ -9,7 +9,7 @@
     </insert>
 
     <select id="selectPicListByPID" resultType="String">
-        select fileurlpath from productimage where pid=#{pid}
+        select fileurlpath from productimage where pid=#{pid} and `type` = 1
     </select>
 
     <select id="selectIndexImageNull" resultType="String">
@@ -23,7 +23,7 @@
         select fileurlpath from productimage where pid=#{id}
     </select>
 
-    <select id="selectTopSelect" resultType="int">
+    <select id="selectTopSelect" resultType="Integer">
         select sort from productimage where type =#{type} and pid =#{pid} order by sort desc limit 0,1
     </select>
 </mapper>

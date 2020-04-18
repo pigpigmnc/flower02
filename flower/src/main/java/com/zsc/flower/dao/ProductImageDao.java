@@ -17,5 +17,5 @@ public interface ProductImageDao{
     public String selectIndexImageNull(@Param("id") long id);
     public String selectViewImageNull(@Param("id") long id);
 
-    int selectTopSelect(@Param("pid") long pid,@Param("type") byte type);
+    Integer selectTopSelect(@Param("pid") long pid,@Param("type") byte type);
 }

@@ -29,7 +29,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
-    public int findTopSort(long pid, byte type) {
+    public Integer findTopSort(long pid, byte type) {
         return productImageDao.selectTopSelect(pid,type);
     }
 }

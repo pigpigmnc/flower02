@@ -6,6 +6,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zsc.flower.service.ProductImageService;
 import com.zsc.flower.service.ProductService;
+import com.zsc.flower.tag.UserLoginToken;
+import com.zsc.flower.utils.token.TokenUtil;
 import org.apache.commons.lang.StringUtils;
 import model.entity.*;
 import model.result.ResponseResult;
@@ -133,6 +135,10 @@ public class ProductController {
     public ResponseResult showBaseDetail(long id) {
         ResponseResult result = new ResponseResult();
         List<BaseDetail> baseDetailList = productService.findShowBaseDetail(id);
+        baseDetailList.forEach(baseDetail -> {
+            String bannerPic = productService.findBannerPic(id);
+            baseDetail.setFileurlpath(bannerPic);
+        });
         result.setMsg(true);
         result.setData(baseDetailList);
         return result;
@@ -175,14 +181,14 @@ public class ProductController {
         return result;
     }
 
-    //单个商品的展示，返回商品的基本信息加五张图
+    //单个商品的展示，返回商品的基本信息加3张图
     @RequestMapping(value = "/showProductDetail", method = RequestMethod.GET)
     public ResponseResult showProductDetail(@RequestParam("pid") long pid) {
         //这个SimpleProWithPic用来打包所有商品信息传递给前端‘
         SimpleProWithPic simpleProWithPic = new SimpleProWithPic();
 
-        List<String> fileurlpathlist = productImageService.findPicListByPID(pid);
-        simpleProWithPic.setFileurlpath(fileurlpathlist);
+        List<String> fileUrlPathList = productImageService.findPicListByPID(pid);
+        simpleProWithPic.setFileurlpath(fileUrlPathList);
 
         SimpleDetail simpleDetail = productService.findSimpleDetail(pid);
         simpleProWithPic.setSimpleDetail(simpleDetail);
@@ -195,11 +201,15 @@ public class ProductController {
 
     //按商品名模糊匹配查询出产品列表
     @RequestMapping(value = "/dimSearch", method = RequestMethod.GET)
-    public ResponseResult dimSearch(@RequestParam("name") String name) {
+    public ResponseResult dimSearch(@RequestParam(defaultValue = "1", required = true, value = "pn") Integer pn,
+                                    @RequestParam("name") String name) {
+        int pageSize = 8;
+        PageHelper.startPage(pn, pageSize);
         List<ListProduct> listProductList = productService.findListProductByDimSearch(name);
+        PageInfo<ListProduct> pageInfo = new PageInfo<>(listProductList);
         ResponseResult result = new ResponseResult();
         result.setMsg(true);
-        result.setData(listProductList);
+        result.setData(pageInfo);
         return result;
     }
 
@@ -213,6 +223,7 @@ public class ProductController {
         newProduct.setPromotePrice(product.getPromotePrice());
         newProduct.setName(product.getName());
         newProduct.setSubTitle(product.getSubTitle());
+        newProduct.setAttention(product.getAttention());
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
         if (productService.findUpdateProduct(product) == 1) {
@@ -328,8 +339,12 @@ public class ProductController {
             ProductImage productImage = parseContents(data);
             productImage.setPid(pid);
             productImage.setType(bannerPic);
-            int topSort = productImageService.findTopSort(pid,bannerPic);
-            productImage.setSort(topSort+1+i);
+            Integer topSort = productImageService.findTopSort(pid,bannerPic);
+            if(topSort==null){
+                productImage.setSort(0);
+            }else{
+                productImage.setSort(topSort+1);
+            }
             m = productImageService.findInsertProductImages(productImage);
         }
         ResponseResult result = new ResponseResult();
@@ -391,13 +406,11 @@ public class ProductController {
         productImage.setFilename(fileNameSuffix);
         productImage.setFileurlpath(path);
         return productImage;
-
     }
 
     @GetMapping("/getSort")
     public ResponseResult getSort(@RequestParam(defaultValue = "1", required = true, value = "pn") Integer pn,
                                   @RequestParam("cid") long cid, @RequestParam("sort") String sort) {
-
         int pageSize = 10;
         PageHelper.startPage(pn, pageSize);
         ResponseResult result = new ResponseResult();
@@ -412,5 +425,45 @@ public class ProductController {
             result.setData("系统出错");
             return result;
         }
+    }
+
+    @UserLoginToken
+    @PostMapping("/submitReview")
+    public ResponseResult submitReview(@RequestBody Review review){
+        ResponseResult result = new ResponseResult();
+        result.setMsg(false);
+        Long uid = Long.valueOf(TokenUtil.getTokenUserId());
+        review.setUid(uid);
+        if(review.getStar()==null){
+            review.setStar(5);
+        }
+        review.setCreateDate(new Date());
+        int i = productService.findAddReview(review);
+        if(i>0){
+            result.setMsg(true);
+        }
+        return result;
+    }
+
+    @GetMapping("/getProductReviewList")
+    public ResponseResult getProductReviewList(@RequestParam("pid") long pid){
+        List<Review> reviewList = productService.getProductReviewList(pid);
+        ResponseResult result = new ResponseResult();
+        result.setMsg(true);
+        result.setData(reviewList);
+        return result;
+    }
+
+    @GetMapping("/getProductAvgStar")
+    public ResponseResult getProductAvgStar(@RequestParam("pid") long pid){
+        Integer avgStar = productService.getProductAvgStar(pid);
+        ResponseResult result = new ResponseResult();
+        result.setMsg(true);
+        if(avgStar==null){
+            result.setData(5);
+        }else{
+            result.setData(avgStar);
+        }
+        return result;
     }
 }

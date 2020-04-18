@@ -1,5 +1,7 @@
 package com.zsc.flower.dao;
 
+import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import model.entity.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -47,4 +49,12 @@ public interface ProductDao{
     long findPidByTopInsert();
 
     List<ListProduct> selectProductForBanner();
+
+    int insertNewReview(Review review);
+
+    List<Review> getProductReviewList(@Param("pid") long pid);
+
+    Integer getProductAvgStar(@Param("pid") long pid);
+
+    String getBannerPic(@Param("pid") long id);
 }

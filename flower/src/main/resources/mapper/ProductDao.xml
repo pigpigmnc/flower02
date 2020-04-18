@@ -19,8 +19,8 @@
     </insert>
 
     <insert id="selectAddProduct" parameterType="model.entity.Product">
-        insert into Product (name,subTitle,originalPrice,promotePrice,stock,cid,createDate,saleCount)
-        values (#{name},#{subTitle},#{originalPrice},#{promotePrice},#{stock},#{cid},#{createDate},#{saleCount})
+        insert into Product (name,subTitle,originalPrice,promotePrice,stock,cid,createDate,saleCount,attention)
+        values (#{name},#{subTitle},#{originalPrice},#{promotePrice},#{stock},#{cid},#{createDate},#{saleCount},#{attention})
     </insert>
 
 
@@ -45,7 +45,8 @@ product.name,
 product.originalPrice,
 product.promotePrice,
 product.stock,
-product.createDate
+product.createDate,
+product.attention
 FROM
 product ,
 productimage ,
@@ -98,6 +99,7 @@ group by product.id
             p.originalPrice,
             p.stock,
             p.saleCount,
+            p.attention,
             category.name AS categoryname,
             p.createDate
         FROM
@@ -123,7 +125,7 @@ group by product.id
 
     <update id="selectUpdateProduct" parameterType="model.entity.Product">
         update product set name=#{name},subTitle=#{subTitle},promotePrice=#{promotePrice},
-        stock=#{stock} where id=#{id}
+        stock=#{stock}, atttention=#{attention} where id=#{id}
     </update>
 
     <delete id="selectDeleteProduct">
@@ -161,5 +163,33 @@ group by product.id
         where p.cid=c.id and p.id=pimage.pid and pimage.type=0 and pimage.sort=0
         ORDER BY
         p.saleCount DESC
+    </select>
+
+    <insert id="insertNewReview" parameterType="model.entity.Review">
+        insert into review (content,uid,pid,createDate,star) values (#{content},#{uid},#{pid},#{createDate},#{star})
+    </insert>
+
+    <select id="getProductReviewList" resultType="model.entity.Review">
+        SELECT
+users.username,
+review.content,
+review.id,
+review.pid,
+review.createDate,
+review.star
+FROM
+users ,
+review
+WHERE
+users.id =  review.uid and pid=#{pid} order by review.createDate desc
+    </select>
+
+    <select id="getProductAvgStar" resultType="Integer">
+        SELECT avg(review.star)as star from review where pid =#{pid}
+    </select>
+
+    <select id="getBannerPic" resultType="String">
+        SELECT fileurlpath FROM productimage WHERE productimage.pid =#{pid}
+        and sort = 0 and type = 0
     </select>
 </mapper>

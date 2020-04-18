@@ -41,4 +41,12 @@ public interface ProductService {
     long findPidByTopInsert();
 
     List<ListProduct> findProductForBanner();
+
+    int findAddReview(Review review);
+
+    List<Review> getProductReviewList(long pid);
+
+    Integer getProductAvgStar(long pid);
+
+    String findBannerPic(long id);
 }

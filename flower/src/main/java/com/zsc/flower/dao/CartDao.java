@@ -17,4 +17,6 @@ public interface CartDao{
     public void selectUpdateCart(Cart cart);
     public int selectDeleteCartById(@Param("id") long id);
     public void selectDeleteCartByUidAndPid(@Param("uid") long uid, @Param("pid") long pid);
+
+    Cart selectCartByUidAndId(@Param("uid")long uid, @Param("id") long id);
 }

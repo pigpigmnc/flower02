@@ -31,8 +31,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart findCartByUidAndPid(long uid, long pid) {
-        return cartDao.selectCartByUidAndPid(uid,pid);
+    public Cart findCartByUidAndId(long uid, long id) {
+        return cartDao.selectCartByUidAndId(uid,id);
     }
 
     @Override
@@ -53,5 +53,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public void findDeleteCartByUidAndPid(long uid, long pid) {
         cartDao.selectDeleteCartByUidAndPid(uid,pid);
+    }
+
+    @Override
+    public Cart findCartByUidAndPid(long uid, long pid) {
+        return cartDao.selectCartByUidAndPid(uid,pid);
     }
 }

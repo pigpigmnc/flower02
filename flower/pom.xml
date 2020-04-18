@@ -126,28 +126,11 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>1.3.2</version>
         </dependency>
-        <!-- 邮件发送 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-            <version>1.5.13.RELEASE</version>
-        </dependency>
         <!--jwt token-->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>3.4.0</version>
-        </dependency>
-        <!--POI-->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.16</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.14</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -175,6 +158,12 @@
                     <groupId>org.projectlombok</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!--支付宝依赖-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.7.4.ALL</version>
         </dependency>
     </dependencies>
 

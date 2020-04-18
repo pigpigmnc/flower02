@@ -13,5 +13,5 @@ public interface ProductImageService {
 
     public List<String> findProductImageUrlById(long id);
 
-    int findTopSort(long pid,byte type);
+    Integer findTopSort(long pid,byte type);
 }

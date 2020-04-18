@@ -17,4 +17,5 @@ public class BaseDetail implements Serializable {
     Date createDate;
     String fileurlpath;
     String cname;
+    String attention;
 }

@@ -16,5 +16,6 @@ public class Product implements Serializable {
     Long cid;
     Date createDate;
     Long saleCount;
+    String attention;
 
 }

@@ -24,7 +24,7 @@
     </select>
 
     <update id="selectUpdateCart" parameterType="model.entity.Cart">
-        update cart set count=#{count},totalPrice=#{totalPrice}
+        update cart set count=#{count},totalPrice=#{totalPrice} where id = #{id}
     </update>
 
     <delete id="selectDeleteCartById">
@@ -34,4 +34,8 @@
     <delete id="selectDeleteCartByUidAndPid">
         delete from cart where uid=#{uid} and pid=#{pid}
     </delete>
+
+    <select id="selectCartByUidAndId" resultType="model.entity.Cart">
+        select * from cart where uid=#{uid} and id=#{id}
+    </select>
 </mapper>

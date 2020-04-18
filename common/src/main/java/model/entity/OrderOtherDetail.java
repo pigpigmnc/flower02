@@ -9,6 +9,7 @@ import java.util.Date;
 public class OrderOtherDetail implements Serializable {
     private static final long serialVersionUID = -5215419856006085553L;
 
+    String status;
     String orderCode;
     Float orderPrice;
     String receiver;

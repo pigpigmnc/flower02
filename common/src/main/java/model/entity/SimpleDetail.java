@@ -17,4 +17,5 @@ public class SimpleDetail implements Serializable {
     Long saleCount;//销量
     Date createDate;
     String categoryname;
+    String attention;
 }

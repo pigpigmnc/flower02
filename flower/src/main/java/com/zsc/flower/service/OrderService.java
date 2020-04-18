@@ -45,9 +45,11 @@ public interface OrderService {
 
     public Orders findOrderById(long id);
 
-    public int findUpdateOders(Orders orders);
+    public int findUpdateOrders(Orders orders);
 
     List<OrderItemDetail> findOrderItemDetailById(long orderId);
 
     float findTurnOver();
+
+    List<Orders> getAllOrders();
 }

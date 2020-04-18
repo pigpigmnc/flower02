@@ -38,6 +38,7 @@
     <select id="selectOrderItemDetail" resultType="model.entity.OrderItemDetail">
     SELECT
 orders.orderCode,
+orderitem.pid as pid,
 orderitem.number,
 orderitem.simplePrice,
 orderitem.totalPrice,
@@ -60,6 +61,7 @@ GROUP BY
 
     <select id="selectOrderOtherDetail" resultType="model.entity.OrderOtherDetail">
         SELECT
+            orders.status,
             orders.orderCode,
             orders.address,
             orders.receiver,

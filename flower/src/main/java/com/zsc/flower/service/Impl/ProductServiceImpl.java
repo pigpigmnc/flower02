@@ -162,4 +162,24 @@ public class ProductServiceImpl implements ProductService {
         return productDao.selectProductForBanner();
     }
 
+    @Override
+    public int findAddReview(Review review) {
+        return productDao.insertNewReview(review);
+    }
+
+    @Override
+    public List<Review> getProductReviewList(long pid) {
+        return productDao.getProductReviewList(pid);
+    }
+
+    @Override
+    public Integer getProductAvgStar(long pid) {
+        return productDao.getProductAvgStar(pid);
+    }
+
+    @Override
+    public String findBannerPic(long id) {
+        return productDao.getBannerPic(id);
+    }
+
 }
