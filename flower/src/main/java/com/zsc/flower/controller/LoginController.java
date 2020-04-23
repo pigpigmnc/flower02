@@ -41,22 +41,27 @@ public class LoginController {
             result.setData(jsonObject);
             return result;
         } else {
-            if (!user.getPassword().equals(user.getPassword())) {
-                jsonObject.put("message", "登录失败,密码错误");
-                result.setData(jsonObject);
+            if(user.getStatus().equals(0)){
+                result.setData("该账号被停用,请联系管理员");
                 return result;
-            } else {
-                String token = (String) redisTemplate.opsForValue().get(user.getId() + "token");
-                if (token == null) {
-                    token = tokenService.getToken(user);
-                    redisTemplate.opsForValue().set(user.getId() + "token", token);
-                    stringRedisTemplate.expire(user.getId() + "token", 30, TimeUnit.MINUTES);
+            }else{
+                if (!user.getPassword().equals(user.getPassword())) {
+                    jsonObject.put("message", "登录失败,密码错误");
+                    result.setData(jsonObject);
+                    return result;
+                } else {
+                    String token = (String) redisTemplate.opsForValue().get(user.getId() + "token");
+                    if (token == null) {
+                        token = tokenService.getToken(user);
+                        redisTemplate.opsForValue().set(user.getId() + "token", token);
+                        stringRedisTemplate.expire(user.getId() + "token", 30, TimeUnit.MINUTES);
+                    }
+                    jsonObject.put("token", token);
+                    jsonObject.put("user",user);
+                    result.setMsg(true);
+                    result.setData(jsonObject);
+                    return result;
                 }
-                jsonObject.put("token", token);
-                jsonObject.put("user",user);
-                result.setMsg(true);
-                result.setData(jsonObject);
-                return result;
             }
         }
     }

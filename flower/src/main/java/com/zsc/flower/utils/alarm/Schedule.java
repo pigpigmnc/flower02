@@ -26,7 +26,7 @@ public class Schedule {
     @Autowired
     private OrderService orderService;
 
-    @Scheduled(cron = "0/1 * * * * ?")
+//    @Scheduled(cron = "0/1 * * * * ?")
     public void checkOrderStatus() {
         List<Orders> ordersList = orderService.getAllOrders();
         ordersList.forEach(order -> {
@@ -66,7 +66,7 @@ public class Schedule {
         });
     }
 
-    @Scheduled(cron = "0 0/15 * * * ?")
+//    @Scheduled(cron = "0 0/15 * * * ?")
     public void cancelOrder() {
         List<Orders> ordersList = orderService.getAllOrders();
         ordersList.forEach(order -> {

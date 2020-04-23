@@ -226,7 +226,7 @@ public class ProductController {
         newProduct.setAttention(product.getAttention());
         ResponseResult result = new ResponseResult();
         result.setMsg(false);
-        if (productService.findUpdateProduct(product) == 1) {
+        if (productService.findUpdateProduct(newProduct) == 1) {
             result.setMsg(true);
             return result;
         } else

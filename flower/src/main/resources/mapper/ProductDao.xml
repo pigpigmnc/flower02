@@ -125,7 +125,7 @@ group by product.id
 
     <update id="selectUpdateProduct" parameterType="model.entity.Product">
         update product set name=#{name},subTitle=#{subTitle},promotePrice=#{promotePrice},
-        stock=#{stock}, atttention=#{attention} where id=#{id}
+        stock=#{stock}, attention=#{attention} where id=#{id}
     </update>
 
     <delete id="selectDeleteProduct">
