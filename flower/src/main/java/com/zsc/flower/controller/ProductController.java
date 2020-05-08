@@ -52,8 +52,8 @@ public class ProductController {
                 fileName = uuid + fileN.substring(index);
                 File fileMkdir;
                 try {
-//                    fileMkdir = new File("/usr/local/nginx/html/mall-images");
-                    fileMkdir = new File("F:\\nginx-1.12.1\\html\\mall-images");
+                    fileMkdir = new File("/usr/local/nginx/html/mall-images/");
+//                    fileMkdir = new File("F:\\nginx-1.12.1\\html\\mall-images");
                     if (!fileMkdir.exists()) {
                         fileMkdir.mkdir();
                     }
@@ -368,7 +368,8 @@ public class ProductController {
             String type = contents.substring(firstIndex, index1);
 
             fileNameSuffix = UUID.randomUUID().toString() + "." + type;
-            String fileName = "F:\\nginx-1.12.1\\html\\mall-images\\" + fileNameSuffix;
+//            String fileName = "F:\\nginx-1.12.1\\html\\mall-images\\" + fileNameSuffix;
+            String fileName = "/usr/local/nginx/html/mall-images/" + fileNameSuffix;
             BASE64Decoder decoder = new BASE64Decoder();
             OutputStream os = null;
             try {
@@ -463,6 +464,19 @@ public class ProductController {
             result.setData(5);
         }else{
             result.setData(avgStar);
+        }
+        return result;
+    }
+
+    @GetMapping("/getProductReviewNum")
+    public ResponseResult getProductReviewNum(@RequestParam("pid") long pid){
+        Integer reviewNum = productService.getProductReviewNum(pid);
+        ResponseResult result = new ResponseResult();
+        result.setMsg(true);
+        if(reviewNum==null){
+            result.setData(5);
+        }else{
+            result.setData(reviewNum);
         }
         return result;
     }

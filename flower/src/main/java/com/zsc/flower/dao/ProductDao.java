@@ -57,4 +57,6 @@ public interface ProductDao{
     Integer getProductAvgStar(@Param("pid") long pid);
 
     String getBannerPic(@Param("pid") long id);
+
+    Integer getProductReviewNum(long pid);
 }

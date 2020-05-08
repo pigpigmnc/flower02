@@ -11,7 +11,7 @@
     </insert>
 
     <insert id="selectAddOrderItem" parameterType="model.entity.OrderItem">
-        insert into orderitem (pid,oid,uid,number,simplePrice,totalPrice)
+        insert into orderItem (pid,oid,uid,number,simplePrice,totalPrice)
         values (#{pid},#{oid},#{uid},#{number},#{simplePrice},#{totalPrice})
     </insert>
 
@@ -20,9 +20,9 @@
     </select>
 
     <select id="selectOrderPrice" parameterType="Long" resultType="Float">
-        select sum(totalPrice) from orderitem where oid =#{oid}
+        select sum(totalPrice) from orderItem where oid =#{oid}
     </select>
-    
+
     <update id="selectUpdateOrderPrice">
         update orders set orderPrice=#{orderPrice} where id=#{id}
     </update>
@@ -38,23 +38,23 @@
     <select id="selectOrderItemDetail" resultType="model.entity.OrderItemDetail">
     SELECT
 orders.orderCode,
-orderitem.pid as pid,
-orderitem.number,
-orderitem.simplePrice,
-orderitem.totalPrice,
+orderItem.pid as pid,
+orderItem.number,
+orderItem.simplePrice,
+orderItem.totalPrice,
 product.name,
-productimage.fileurlpath
+productImage.fileurlpath
 FROM
 orders ,
-orderitem ,
+orderItem ,
 product ,
-productimage
+productImage
 WHERE
 orders.uid =  #{uid} AND
 orders.id =  #{id} AND
-orderitem.oid = #{id} AND
-orderitem.pid =  product.id AND
-product.id =  productimage.pid
+orderItem.oid = #{id} AND
+orderItem.pid =  product.id AND
+product.id =  productImage.pid
 GROUP BY
             product.name
     </select>
@@ -71,12 +71,12 @@ GROUP BY
             orders.createDate
         FROM
             orders ,
-            orderitem ,
+            orderItem ,
             product
         WHERE
             orders.uid = #{uid} AND
             orders.id = #{id} AND
-            orderitem.pid =  product.id
+            orderItem.pid =  product.id
         GROUP BY
             orders.createDate
     </select>
@@ -130,21 +130,21 @@ GROUP BY
     <select id="findOrderItemDetailById" resultType="model.entity.OrderItemDetail">
     SELECT
 orders.orderCode,
-orderitem.number,
-orderitem.simplePrice,
-orderitem.totalPrice,
+orderItem.number,
+orderItem.simplePrice,
+orderItem.totalPrice,
 product.name,
-productimage.fileurlpath
+productImage.fileurlpath
 FROM
 orders ,
-orderitem ,
+orderItem ,
 product ,
-productimage
+productImage
 WHERE
 orders.id =  #{id} AND
-orderitem.oid = #{id} AND
-orderitem.pid =  product.id AND
-product.id =  productimage.pid
+orderItem.oid = #{id} AND
+orderItem.pid =  product.id AND
+product.id =  productImage.pid
 GROUP BY product.name
     </select>
 

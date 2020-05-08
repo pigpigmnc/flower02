@@ -360,8 +360,9 @@ public class OrderController {
     //立即购买商品
     @UserLoginToken
     @RequestMapping(value = "/buyNow", method = RequestMethod.GET)
-    public ResponseDataPay buyNow(BuyNow buyNow) {
-        //用户可以修改和提交的内容有：地址，收货人名字，收货人电话，买家留言，都是order表的字段
+    public ResponseResult buyNow(BuyNow buyNow) throws AlipayApiException {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setMsg(false);
         //新建这个订单
         Orders order = new Orders();
         long uid = Long.parseLong(TokenUtil.getTokenUserId());
@@ -410,10 +411,40 @@ public class OrderController {
             a = orderService.findUpdateOrderPrice(orderPrice, orderId);
         }
         if (a == 1) {
-            return ResponseDataPay.createBySuccess(WebCts.RESP_SUCCESS, uid, orderId, String.valueOf(order.getOrderCode()),
-                    String.valueOf(order.getOrderCode()), String.valueOf(orderPrice));
+//                //获得初始化的AlipayClient
+//                AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
+//
+//                //设置请求参数
+//                AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
+//                alipayRequest.setReturnUrl(AlipayConfig.return_url);
+//                alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
+//
+//                //商户订单号，商户网站订单系统中唯一订单号，必填
+//                String out_trade_no = String.valueOf(order.getOrderCode());
+//                //付款金额，必填
+//                String total_amount = String.valueOf(order.getOrderPrice());
+//                //订单名称，必填
+//                String subject = "flowerOnline-"+order.getOrderCode();
+//                //商品描述，可空
+//                String body = "";
+//
+//                alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
+//                        + "\"total_amount\":\""+ total_amount +"\","
+//                        + "\"subject\":\""+ subject +"\","
+//                        + "\"body\":\""+ body +"\","
+//                        + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+//
+//                //请求
+//                String result = alipayClient.pageExecute(alipayRequest).getBody();
+//                if(result!=null){
+//                    responseResult.setMsg(true);
+//                    responseResult.setData(result);
+//                }
+            responseResult.setMsg(true);
+            responseResult.setData(order.getOrderCode());
+                return responseResult;
         } else
-            return ResponseDataPay.createByError();
+            return responseResult;
     }
 
     //按订单编号查找订单信息

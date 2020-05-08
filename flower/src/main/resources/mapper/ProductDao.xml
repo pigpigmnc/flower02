@@ -19,7 +19,7 @@
     </insert>
 
     <insert id="selectAddProduct" parameterType="model.entity.Product">
-        insert into Product (name,subTitle,originalPrice,promotePrice,stock,cid,createDate,saleCount,attention)
+        insert into product (name,subTitle,originalPrice,promotePrice,stock,cid,createDate,saleCount,attention)
         values (#{name},#{subTitle},#{originalPrice},#{promotePrice},#{stock},#{cid},#{createDate},#{saleCount},#{attention})
     </insert>
 
@@ -38,7 +38,7 @@
     <select id="selectShowBaseDetail" resultMap="BaseDetailMap">
         SELECT
 category.name as cname,
-productimage.fileurlpath,
+productImage.fileurlpath,
 product.id,
 product.subTitle,
 product.name,
@@ -49,10 +49,10 @@ product.createDate,
 product.attention
 FROM
 product ,
-productimage ,
+productImage ,
 category
 WHERE
-product.id =  productimage.pid AND
+product.id =  productImage.pid AND
 product.cid =  category.id and product.id=#{id}
 group by product.id
     </select>
@@ -63,9 +63,7 @@ group by product.id
     <!--增加saleCount之后-->
     <select id="selectListProduct" resultType="model.entity.ListProduct">
     select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
-        from product as p,category as c,productimage as pimage where p.cid=c.id and p.id=pimage.pid and pimage.type=1 and pimage.sort=0 order by p.createDate desc
---         select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
---         from product as p,category as c,productimage as pimage where p.cid=c.id and p.id=pimage.pid group by id
+        from product as p,category as c,productImage as pimage where p.cid=c.id and p.id=pimage.pid and pimage.type=1 and pimage.sort=0 order by p.createDate desc
     </select>
 
     <select id="selectCategoryCount" resultType="Integer">
@@ -86,8 +84,8 @@ group by product.id
     </update>
 
     <select id="selectProductByCId" parameterType="Long" resultType="model.entity.ListProduct">
-        select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
-        from product as p,category as c,productimage as pimage where p.cid=c.id and p.id=pimage.pid and p.cid=#{cid} group by p.id
+select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
+        from product as p,category as c,productImage as pimage where p.cid=c.id and p.id=pimage.pid and p.cid=#{cid} and pimage.type=1 group by p.id order by p.id desc
     </select>
 
     <select id="selectSimpleDetail" resultType="model.entity.SimpleDetail">
@@ -114,7 +112,7 @@ group by product.id
 
     <select id="selectListProductByDimSearch" resultType="model.entity.ListProduct">
     select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
-    from product as p,category as c,productimage as pimage
+    from product as p,category as c,productImage as pimage
     where p.cid=c.id and p.id=pimage.pid and p.name LIKE "%"#{name}"%"
     group by id
     </select>
@@ -138,7 +136,7 @@ group by product.id
 
     <select id="selectListProductByCreateDate" resultType="model.entity.ListProduct">
         select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
-        from product as p,category as c,productimage as pimage
+        from product as p,category as c,productImage as pimage
         where p.cid=c.id and p.id=pimage.pid
         group by id
         ORDER BY
@@ -146,7 +144,7 @@ group by product.id
     </select>
     <select id="selectListProductBySaleCount" resultType="model.entity.ListProduct">
         select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
-        from product as p,category as c,productimage as pimage
+        from product as p,category as c,productImage as pimage
         where p.cid=c.id and p.id=pimage.pid
         group by id
         ORDER BY
@@ -159,7 +157,7 @@ group by product.id
 
     <select id="selectProductForBanner" resultType="model.entity.ListProduct">
         select p.id,p.name,p.subTitle,p.originalPrice,p.promotePrice,p.stock,p.createDate,pimage.fileurlpath,c.name as cname,p.saleCount
-        from product as p,category as c,productimage as pimage
+        from product as p,category as c,productImage as pimage
         where p.cid=c.id and p.id=pimage.pid and pimage.type=0 and pimage.sort=0
         ORDER BY
         p.saleCount DESC
@@ -189,7 +187,11 @@ users.id =  review.uid and pid=#{pid} order by review.createDate desc
     </select>
 
     <select id="getBannerPic" resultType="String">
-        SELECT fileurlpath FROM productimage WHERE productimage.pid =#{pid}
+        SELECT fileurlpath FROM productImage WHERE productImage.pid =#{pid}
         and sort = 0 and type = 0
+    </select>
+
+    <select id="getProductReviewNum" resultType="Integer">
+        select count(*) from review where pid = #{pid}
     </select>
 </mapper>

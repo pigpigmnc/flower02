@@ -141,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
                 return pageInfo;
             }
             case "originalPrice":{
-                PageHelper.orderBy("originalPrice desc");
+                PageHelper.orderBy("promotePrice asc");
                 PageInfo<ListProduct> pageInfo=new PageInfo<>(productDao.selectProductByCId(cid));
                 return pageInfo;
             }
@@ -180,6 +180,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String findBannerPic(long id) {
         return productDao.getBannerPic(id);
+    }
+
+    @Override
+    public Integer getProductReviewNum(long pid) {
+        return productDao.getProductReviewNum(pid);
     }
 
 }

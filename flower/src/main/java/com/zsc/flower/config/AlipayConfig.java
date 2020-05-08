@@ -26,10 +26,12 @@ public class AlipayConfig {
 	// 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
     public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiOlhIblUPWgSSaCTKKsHah1YvEfGxyDJO76Gtn/YN84MTQUbDILcGfbtOCjtC3OE/RagYai69+34oLVcdyoQVOIoD4RtwIOr2PRA+Te0dBEg0TiNPIK50u7BviQ8fe/CZIStjyDhXf+k5Z1iqpK4s1ufOQciUw1vGZ9sW7I17GUcKtik62giGtAoDRki1GWfQy62nQI7+3hty8CfAAO/EYGG6JfrghNEbheVERUTEx/dipsXXsUatqdBFsnP+yvZReVbKXYDUeIE6kOiiLX41HXY3D3mGacK503ABZsbNoFAJTSJH9syJftPg7CD7RYIKGMU1wKinmcOZf6KXltZMQIDAQAB";
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://airnet-data.natapp1.cc/order/alipayNotifyNotice";
+//	public static String notify_url = "http://airnet-data.natapp1.cc/order/alipayNotifyNotice";
+	public static String notify_url = "http://49.232.140.139:8088/order/alipayNotifyNotice";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = "http://airnet-data.natapp1.cc/mall/my_account.html";
+//	public static String return_url = "http://airnet-data.natapp1.cc/mall/my_account.html";
+	public static String return_url = "http://49.232.140.139:8081/mall/my_account.html";
 
 	// 签名方式
 	public static String sign_type = "RSA2";

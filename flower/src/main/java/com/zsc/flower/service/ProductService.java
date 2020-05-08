@@ -21,7 +21,7 @@ public interface ProductService {
     public long findOldSaleCount(long id);
     public int findUpdateSaleCount(long id, long stock);
 
-    List<ListProduct> findProductsByCId(long cid);//yi
+    List<ListProduct> findProductsByCId(long cid);
 
     public SimpleDetail findSimpleDetail(long id);
     public List<ListProduct> findListProductByDimSearch(String name);
@@ -49,4 +49,6 @@ public interface ProductService {
     Integer getProductAvgStar(long pid);
 
     String findBannerPic(long id);
+
+    Integer getProductReviewNum(long pid);
 }

@@ -4,12 +4,12 @@
 <!-- namespace表示命名空间 -->
 <mapper namespace="com.zsc.flower.dao.ProductImageDao">
     <insert id="selectInsertProductImages" parameterType="model.entity.ProductImage">
-        insert into productimage (pid,filename,fileurlpath,`type`,sort)
+        insert into productImage (pid,filename,fileurlpath,`type`,sort)
         values (#{pid},#{filename},#{fileurlpath},#{type},#{sort})
     </insert>
 
     <select id="selectPicListByPID" resultType="String">
-        select fileurlpath from productimage where pid=#{pid} and `type` = 1
+        select fileurlpath from productImage where pid=#{pid} and `type` = 1
     </select>
 
     <select id="selectIndexImageNull" resultType="String">
@@ -20,10 +20,10 @@
     </select>
 
     <select id="selectProductImageUrlById" resultType="String">
-        select fileurlpath from productimage where pid=#{id}
+        select fileurlpath from productImage where pid=#{id}
     </select>
 
     <select id="selectTopSelect" resultType="Integer">
-        select sort from productimage where type =#{type} and pid =#{pid} order by sort desc limit 0,1
+        select sort from productImage where type =#{type} and pid =#{pid} order by sort desc limit 0,1
     </select>
 </mapper>
